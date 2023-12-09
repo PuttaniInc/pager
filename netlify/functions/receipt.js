@@ -22,6 +22,7 @@ export async function handler(event, context) {
 
     const cleanUrl = decodeURIComponent(url).replace(/<>/g, '&').replace(/##/g, '?');
     const urlParams = new URLSearchParams(cleanUrl);
+    const receiptNo = urlParams.get('receiptNo');
     const paymentDate = urlParams.get('paymentDate');
     const referenceNo = urlParams.get('referenceNo');
     const paymentMode = urlParams.get('paymentMode');
@@ -30,6 +31,7 @@ export async function handler(event, context) {
     const amount = urlParams.get('amount');
 
     const receiptData = {
+      receiptNo,
       paymentDate,
       referenceNo,
       paymentMode,
@@ -40,6 +42,7 @@ export async function handler(event, context) {
     };
 
     await page.evaluate((data) => {
+      document.getElementById('receipt-no').innerHTML = `${data.receiptNo}`;
       document.getElementById('payment-date').innerHTML = `${data.paymentDate}`;
       document.getElementById('reference-no').innerHTML = `${data.referenceNo}`;
       document.getElementById('payment-mode').innerHTML = `${data.paymentMode}`;
